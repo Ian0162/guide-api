@@ -20,8 +20,30 @@ namespace GuideAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<List<DepartmentTableDto>>> GetDataWithPagination(DepartmentTableDto request)
         {
-          
+
             var result = await mediator.Send(new IDepartmentPagination(request));
+
+            return Ok(result);
+        }
+
+        [HttpPost("create")]
+        [ProducesResponseType(201)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CreateDepartmentDto>> CreateDepartment(CreateDepartmentDto request)
+        {
+            var result = await mediator.Send(new ICreateDepartment(request));
+
+            return Ok(result);
+        }
+
+        [HttpPatch("update/{Id}")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<CreateDepartmentDto>> UpdateDepartment(int Id, UpdateDepartmentDto request)
+        {
+            var result = await mediator.Send(new IUpdateDepartment(request, Id));
 
             return Ok(result);
         }

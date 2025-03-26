@@ -1,6 +1,8 @@
 ﻿using GuideAPI.Data;
 using GuideAPI.Dto;
+using GuideAPI.Exceptions;
 using GuideAPI.Models;
+using GuideAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
 
 namespace GuideAPI.Repositories
@@ -61,5 +63,74 @@ namespace GuideAPI.Repositories
             return response;
         }
 
+        public async Task<CreateUpdateResponse> CreateDepartment(CreateDepartmentDto request)
+        {
+            var isFound = await context.departments.SingleOrDefaultAsync(col => col.departmentName == request.departmentName);
+
+
+            if(!string.IsNullOrEmpty(isFound?.departmentName))
+            {
+                Console.WriteLine("Existing");
+                throw new Exception();
+            }
+
+            var department = new Department
+            {
+                departmentName = request.departmentName,
+                isHidden = request.isHidden,
+                createdDate = DateTimeOffset.UtcNow.DateTime
+            };
+
+            await context.departments.AddAsync(department);
+            var result = await context.SaveChangesAsync();
+
+            if(result > 0)
+            {
+                 // Throw Err
+            }
+
+            var response = new CreateUpdateResponse
+            {
+                Id = department.Id,
+            };
+            return response;
+
+        }
+
+        public async Task<CreateUpdateResponse> UpdateDepartment(UpdateDepartmentDto request, int Id)
+        {
+            var isExist = await context.departments.SingleOrDefaultAsync(col => col.departmentName == request.departmentName);
+
+
+            if (!string.IsNullOrEmpty(isExist?.departmentName))
+            {
+                Console.WriteLine("Existing");
+                throw new Exception();
+            }
+
+            var data = await context.departments.FirstOrDefaultAsync(get =>  get.Id == Id);
+
+            if (data == null)
+            {
+                Console.WriteLine("Existing");
+                throw new Exception();
+            }
+
+            context.departments.Entry(data).CurrentValues.SetValues(request);
+
+            var result = await context.SaveChangesAsync();
+
+            if (result > 0)
+            {
+                // Throw Err
+            }
+
+            var response = new CreateUpdateResponse
+            {
+                Id = Id,
+            };
+            return response;
+
+        }
     }
 }

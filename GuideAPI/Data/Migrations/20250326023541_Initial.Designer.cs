@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuideAPI.Data.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20250325124117_InitialDatabase")]
-    partial class InitialDatabase
+    [Migration("20250326023541_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,7 +64,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 1,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(6899),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5556),
                             departmentName = "Software Development",
                             isHidden = false
                         },
@@ -72,7 +72,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 2,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7328),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5895),
                             departmentName = "Marketing",
                             isHidden = false
                         },
@@ -80,7 +80,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 3,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7338),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5901),
                             departmentName = "Admin",
                             isHidden = false
                         },
@@ -88,7 +88,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 4,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7340),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5902),
                             departmentName = "Human Resources",
                             isHidden = false
                         },
@@ -96,7 +96,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 5,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7341),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5903),
                             departmentName = "Finance",
                             isHidden = false
                         },
@@ -104,7 +104,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 6,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7364),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5904),
                             departmentName = "Operations",
                             isHidden = false
                         },
@@ -112,7 +112,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 7,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7366),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5906),
                             departmentName = "Sales",
                             isHidden = false
                         },
@@ -120,7 +120,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 8,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7367),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5907),
                             departmentName = "Customer Support",
                             isHidden = false
                         },
@@ -128,7 +128,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 9,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7368),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5908),
                             departmentName = "Legal",
                             isHidden = false
                         },
@@ -136,7 +136,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 10,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7370),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5909),
                             departmentName = "Product Management",
                             isHidden = false
                         },
@@ -144,7 +144,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 11,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7371),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5911),
                             departmentName = "Engineering",
                             isHidden = false
                         },
@@ -152,7 +152,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 12,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7373),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5912),
                             departmentName = "Business Development",
                             isHidden = false
                         },
@@ -160,7 +160,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 13,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7374),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5913),
                             departmentName = "Quality Assurance",
                             isHidden = false
                         },
@@ -168,7 +168,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 14,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7375),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5915),
                             departmentName = "Research & Development",
                             isHidden = false
                         },
@@ -176,7 +176,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 15,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7377),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5916),
                             departmentName = "IT Support",
                             isHidden = false
                         },
@@ -184,7 +184,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 16,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7378),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5917),
                             departmentName = "Design",
                             isHidden = false
                         },
@@ -192,7 +192,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 17,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7379),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5918),
                             departmentName = "Procurement",
                             isHidden = false
                         },
@@ -200,7 +200,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 18,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7381),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5919),
                             departmentName = "Training",
                             isHidden = false
                         },
@@ -208,7 +208,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 19,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7382),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5921),
                             departmentName = "Public Relations",
                             isHidden = false
                         },
@@ -216,7 +216,7 @@ namespace GuideAPI.Data.Migrations
                         {
                             Id = 20,
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 25, 12, 41, 17, 119, DateTimeKind.Unspecified).AddTicks(7383),
+                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5922),
                             departmentName = "Compliance",
                             isHidden = false
                         });
