@@ -6,6 +6,7 @@ using GuideAPI.Filters.Validators;
 using GuideAPI.Models;
 using GuideAPI.Services.Interface;
 using MediatR;
+using System.Net;
 
 namespace GuideAPI.Handler
 {
@@ -28,7 +29,11 @@ namespace GuideAPI.Handler
 
                 if (isValidated.Errors.Any())
                 {
-                   throw new InvalidPayloadException("Invalid", 400 ,isValidated);
+                    throw ThrowHttpException.Throw(
+                         HttpStatusCode.BadRequest,
+                         "Invalid Data",
+                         "Some required data is missing"
+                    );
                 }
 
                 var mapped = mapper.Map<DepartmentTableDto>(request);

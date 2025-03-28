@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GuideAPI.Filters
 {
-    public class IUpdateDepartment : IRequest<CreateUpdateResponse>
+    public class IUpdateDepartment : IRequest<DefaultResponse>
     {
         public int Id;
 

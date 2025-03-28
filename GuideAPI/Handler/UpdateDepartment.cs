@@ -5,10 +5,12 @@ using GuideAPI.Filters;
 using GuideAPI.Filters.Validators;
 using GuideAPI.Services.Interface;
 using MediatR;
+using System.Net;
+using System.Web.Http;
 
 namespace GuideAPI.Handler
 {
-    public class UpdateDepartment : IRequestHandler<IUpdateDepartment, CreateUpdateResponse>
+    public class UpdateDepartment : IRequestHandler<IUpdateDepartment, DefaultResponse>
     {
         public readonly IMapper mapper;
         public readonly IDepartmentService service;
@@ -17,7 +19,7 @@ namespace GuideAPI.Handler
             this.service = service;
         }
 
-        public async Task<CreateUpdateResponse> Handle(IUpdateDepartment request , CancellationToken cancellationToken)
+        public async Task<DefaultResponse> Handle(IUpdateDepartment request , CancellationToken cancellationToken)
         {
             try
             {
@@ -27,14 +29,49 @@ namespace GuideAPI.Handler
 
                 if (isValidated.Errors.Any())
                 {
-                    throw new InvalidPayloadException("Invalid", 400, isValidated);
+                    throw ThrowHttpException.Throw(
+                         HttpStatusCode.BadRequest,
+                         "Invalid Data",
+                         "Some required data is missing"
+                    );
                 }
+
+                
+                if (!string.IsNullOrEmpty(request.departmentName))
+                {
+                    var isExist = await service.CheckDepartmentNameIfExist(request.departmentName);
+
+
+                    if (!string.IsNullOrEmpty(isExist?.departmentName))
+                    {
+                        throw ThrowHttpException.Throw(
+                             HttpStatusCode.Conflict,
+                             "Department Already Exist",
+                             ""
+                        );
+                    }
+                }
+                var data = await service.CheckIdIfExist(request.Id);
+
+                if (data == null)
+                {
+                    throw ThrowHttpException.Throw(
+                        HttpStatusCode.NotFound,
+                        "Data not exist",
+                        ""
+                    );
+                }
+
 
                 var mapped = mapper.Map<UpdateDepartmentDto>(request);
 
-                var result = await service.UpdateDepartment(mapped, request.Id);
+                var result = await service.UpdateDepartment(data, mapped, request.Id);
 
                 return result;
+            }
+            catch (HttpResponseException)
+            {
+                throw;
             }
             catch (Exception err)
             {
@@ -45,7 +82,11 @@ namespace GuideAPI.Handler
                     details = err.Message
                 };
 
-                throw new InternalServerException(response.message, response.code, response.details);
+                throw ThrowHttpException.Throw(
+                    HttpStatusCode.InternalServerError,
+                    response.message,
+                    response.details
+                );
 
             }
         }

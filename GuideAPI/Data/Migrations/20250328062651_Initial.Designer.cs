@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GuideAPI.Data.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20250326023541_Initial")]
+    [Migration("20250328062651_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -33,14 +33,17 @@ namespace GuideAPI.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("createdBy")
                         .HasColumnType("int");
-
-                    b.Property<DateTime?>("createdDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("deleteDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("departmentName")
                         .IsRequired()
@@ -52,9 +55,6 @@ namespace GuideAPI.Data.Migrations
                     b.Property<string>("updatedBy")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("updatedDate")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.ToTable("departments");
@@ -63,160 +63,160 @@ namespace GuideAPI.Data.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(2603),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5556),
                             departmentName = "Software Development",
                             isHidden = false
                         },
                         new
                         {
                             Id = 2,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3024),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5895),
                             departmentName = "Marketing",
                             isHidden = false
                         },
                         new
                         {
                             Id = 3,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3029),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5901),
                             departmentName = "Admin",
                             isHidden = false
                         },
                         new
                         {
                             Id = 4,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3031),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5902),
                             departmentName = "Human Resources",
                             isHidden = false
                         },
                         new
                         {
                             Id = 5,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3052),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5903),
                             departmentName = "Finance",
                             isHidden = false
                         },
                         new
                         {
                             Id = 6,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3054),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5904),
                             departmentName = "Operations",
                             isHidden = false
                         },
                         new
                         {
                             Id = 7,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3055),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5906),
                             departmentName = "Sales",
                             isHidden = false
                         },
                         new
                         {
                             Id = 8,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3056),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5907),
                             departmentName = "Customer Support",
                             isHidden = false
                         },
                         new
                         {
                             Id = 9,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3058),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5908),
                             departmentName = "Legal",
                             isHidden = false
                         },
                         new
                         {
                             Id = 10,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3059),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5909),
                             departmentName = "Product Management",
                             isHidden = false
                         },
                         new
                         {
                             Id = 11,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3060),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5911),
                             departmentName = "Engineering",
                             isHidden = false
                         },
                         new
                         {
                             Id = 12,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3061),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5912),
                             departmentName = "Business Development",
                             isHidden = false
                         },
                         new
                         {
                             Id = 13,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3063),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5913),
                             departmentName = "Quality Assurance",
                             isHidden = false
                         },
                         new
                         {
                             Id = 14,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3064),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5915),
                             departmentName = "Research & Development",
                             isHidden = false
                         },
                         new
                         {
                             Id = 15,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3065),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5916),
                             departmentName = "IT Support",
                             isHidden = false
                         },
                         new
                         {
                             Id = 16,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3066),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5917),
                             departmentName = "Design",
                             isHidden = false
                         },
                         new
                         {
                             Id = 17,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3068),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5918),
                             departmentName = "Procurement",
                             isHidden = false
                         },
                         new
                         {
                             Id = 18,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3069),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5919),
                             departmentName = "Training",
                             isHidden = false
                         },
                         new
                         {
                             Id = 19,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3070),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5921),
                             departmentName = "Public Relations",
                             isHidden = false
                         },
                         new
                         {
                             Id = 20,
+                            CreatedAt = new DateTime(2025, 3, 28, 6, 26, 51, 169, DateTimeKind.Unspecified).AddTicks(3071),
                             createdBy = 1,
-                            createdDate = new DateTime(2025, 3, 26, 2, 35, 41, 111, DateTimeKind.Unspecified).AddTicks(5922),
                             departmentName = "Compliance",
                             isHidden = false
                         });

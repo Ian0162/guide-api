@@ -1,9 +1,9 @@
 ﻿using GuideAPI.Data;
 using GuideAPI.Dto;
-using GuideAPI.Exceptions;
 using GuideAPI.Models;
 using GuideAPI.Repositories.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace GuideAPI.Repositories
 {
@@ -15,9 +15,12 @@ namespace GuideAPI.Repositories
             this.context = context;
         }
 
+        public async Task<Department> CheckDepartmentNameIfExist(string departmentName) => await context.departments.SingleOrDefaultAsync(col => col.departmentName == departmentName);
+        public async Task<Department> CheckIdIfExist(int Id) => await context.departments.FindAsync(Id);
+
         public async Task<DepartmentTableResponse<Models.Department>> GetAllDepartmentPagination(DepartmentTableDto pagination)
         {
-            IQueryable<Models.Department> List = context.departments;
+            IQueryable<Models.Department> List = context.departments.Where(col => col.DeletedAt == null);
 
             var skip = (pagination.page - 1) * pagination.rowsPerPage;
 
@@ -26,9 +29,9 @@ namespace GuideAPI.Repositories
             {
                 // Query For Checking Date (Created)
                 List = List.Where(date =>
-                    pagination.startDate <= DateOnly.FromDateTime((DateTime)date.createdDate)
+                    pagination.startDate <= DateOnly.FromDateTime((DateTime)date.CreatedAt)
                     &&
-                    DateOnly.FromDateTime((DateTime)date.createdDate) <= pagination.endDate);
+                    DateOnly.FromDateTime((DateTime)date.CreatedAt) <= pagination.endDate);
             }
 
             if (!string.IsNullOrEmpty(pagination.searchString))
@@ -43,7 +46,7 @@ namespace GuideAPI.Repositories
             var result = await List
                 .Skip(skip)
                 .Take(pagination.rowsPerPage)
-                .OrderByDescending(ob => ob.Id)
+                .OrderByDescending(ob => ob.CreatedAt)
             .ToListAsync();
 
             var start = result.Count == 0 ? 0 : (pagination.page - 1) * pagination.rowsPerPage + 1;
@@ -63,22 +66,13 @@ namespace GuideAPI.Repositories
             return response;
         }
 
-        public async Task<CreateUpdateResponse> CreateDepartment(CreateDepartmentDto request)
+        public async Task<DefaultResponse> CreateDepartment(CreateDepartmentDto request)
         {
-            var isFound = await context.departments.SingleOrDefaultAsync(col => col.departmentName == request.departmentName);
-
-
-            if(!string.IsNullOrEmpty(isFound?.departmentName))
-            {
-                Console.WriteLine("Existing");
-                throw new Exception();
-            }
-
             var department = new Department
             {
                 departmentName = request.departmentName,
                 isHidden = request.isHidden,
-                createdDate = DateTimeOffset.UtcNow.DateTime
+                CreatedAt = DateTimeOffset.UtcNow.DateTime
             };
 
             await context.departments.AddAsync(department);
@@ -89,7 +83,7 @@ namespace GuideAPI.Repositories
                  // Throw Err
             }
 
-            var response = new CreateUpdateResponse
+            var response = new DefaultResponse
             {
                 Id = department.Id,
             };
@@ -97,26 +91,23 @@ namespace GuideAPI.Repositories
 
         }
 
-        public async Task<CreateUpdateResponse> UpdateDepartment(UpdateDepartmentDto request, int Id)
+        public async Task<DefaultResponse> UpdateDepartment(Models.Department data, UpdateDepartmentDto request, int Id)
         {
-            var isExist = await context.departments.SingleOrDefaultAsync(col => col.departmentName == request.departmentName);
-
-
-            if (!string.IsNullOrEmpty(isExist?.departmentName))
+            foreach (PropertyInfo property in request.GetType().GetProperties())
             {
-                Console.WriteLine("Existing");
-                throw new Exception();
+                var value = property.GetValue(request);
+
+                if (value != null)
+                {
+
+                    var modelProperty = data.GetType().GetProperty(property.Name);
+                    if (modelProperty != null && modelProperty.CanWrite)
+                    {
+                        data.UpdatedAt = DateTime.UtcNow;
+                        modelProperty.SetValue(data, value);
+                    }
+                }
             }
-
-            var data = await context.departments.FirstOrDefaultAsync(get =>  get.Id == Id);
-
-            if (data == null)
-            {
-                Console.WriteLine("Existing");
-                throw new Exception();
-            }
-
-            context.departments.Entry(data).CurrentValues.SetValues(request);
 
             var result = await context.SaveChangesAsync();
 
@@ -125,12 +116,40 @@ namespace GuideAPI.Repositories
                 // Throw Err
             }
 
-            var response = new CreateUpdateResponse
+            var response = new DefaultResponse
             {
                 Id = Id,
             };
             return response;
-
         }
+
+        public async Task<DefaultResponse> DeleteDepartment(int Id)
+        {
+            var data = await context.departments.FindAsync(Id);
+
+            if (data != null)
+            {
+                data.DeletedAt = DateTime.UtcNow;
+                context.departments.Entry(data).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+            }
+
+            var response = new DefaultResponse
+            {
+                Id = Id,
+            };
+            return response;
+        }
+
+        //public async Task RestoreAsync(int id)
+        //{
+        //    var entity = await _dbSet.IgnoreQueryFilters().FirstOrDefaultAsync(e => e.Id == id);
+        //    if (entity != null)
+        //    {
+        //        entity.DeletedAt = null;
+        //        _context.Entry(entity).State = EntityState.Modified;
+        //        await _context.SaveChangesAsync();
+        //    }
+        //}
     }
 }

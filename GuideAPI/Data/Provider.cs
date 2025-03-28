@@ -7,7 +7,9 @@ namespace GuideAPI.Data
         public static IServiceCollection InitializeDatabase(this IServiceCollection services, IConfiguration config)
         {
             services.AddDbContext<DBContext>(options =>
-                options.UseSqlServer(config.GetConnectionString("GuideAPIConnectionStrings")));
+                options.UseSqlServer(config.GetConnectionString("GuideAPIConnectionStrings")).LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors());
 
             return services;
         }

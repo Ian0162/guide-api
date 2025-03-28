@@ -14,7 +14,7 @@ namespace GuideAPI.Filters.Validators
 
             RuleFor(key => key.isHidden)
                 .Must(value => value == true || value == false)
-                .WithMessage("{PropertyName} is reqtestuired")
+                .WithMessage("{PropertyName} is required")
                 .When(x => !string.IsNullOrEmpty(x.isHidden.ToString()));
 
             this.service = service;

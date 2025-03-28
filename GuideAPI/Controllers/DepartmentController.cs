@@ -41,11 +41,21 @@ namespace GuideAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<CreateDepartmentDto>> UpdateDepartment(int Id, UpdateDepartmentDto request)
+        public async Task<ActionResult<UpdateDepartmentDto>> UpdateDepartment(int Id, UpdateDepartmentDto request)
         {
             var result = await mediator.Send(new IUpdateDepartment(request, Id));
 
             return Ok(result);
+        }
+
+        [HttpDelete("delete/{Id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public async Task<ActionResult> DeleteDepartment(int Id)
+        {
+            await mediator.Send(new IDeleteDepartment(Id));
+            return NoContent();
         }
     }
 }

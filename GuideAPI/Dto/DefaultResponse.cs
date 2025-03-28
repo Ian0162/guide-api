@@ -1,6 +1,6 @@
 ﻿namespace GuideAPI.Dto
 {
-    public class CreateUpdateResponse
+    public class DefaultResponse
     {
         public int Id { get; set; }
 
@@ -19,7 +19,7 @@
         public int responseCode { get; private set; } = 200; // Default to 200
         public string responseMessage { get; private set; } = ""; // Default to empty
 
-        public CreateUpdateResponse()
+        public DefaultResponse()
         {
             isErr = false;
         }

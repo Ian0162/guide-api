@@ -3,9 +3,9 @@
     public abstract class BaseModel
     {
         public int Id { get; set; }
-        public DateTime? createdDate { get; set; }
-        public DateTime? updatedDate { get; set; }
-        public DateTime? deleteDate { get; set; }
+        public DateTime? CreatedAt { get; set; } // created_at
+        public DateTime? UpdatedAt { get; set; } // updated_at
+        public DateTime? DeletedAt { get; set; } // deleted_at
         public int createdBy { get; set; }
         public string? updatedBy { get; set; }
     }

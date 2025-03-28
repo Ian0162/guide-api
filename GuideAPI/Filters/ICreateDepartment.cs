@@ -3,7 +3,7 @@ using MediatR;
 
 namespace GuideAPI.Filters
 {
-    public class ICreateDepartment : IRequest<CreateUpdateResponse>
+    public class ICreateDepartment : IRequest<DefaultResponse>
     {
         public string departmentName { get; set; }
         public bool? isHidden { get; set; }

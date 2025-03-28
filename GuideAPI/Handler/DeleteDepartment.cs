@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using GuideAPI.Dto;
 using GuideAPI.Exceptions;
 using GuideAPI.Filters;
@@ -7,51 +6,46 @@ using GuideAPI.Filters.Validators;
 using GuideAPI.Services.Interface;
 using MediatR;
 using System.Net;
-using System.Web.Http;
 
 namespace GuideAPI.Handler
 {
-    public class CreateDepartment : IRequestHandler<ICreateDepartment, DefaultResponse>
+    public class DeleteDepartment : IRequestHandler<IDeleteDepartment, DefaultResponse>
     {
         private readonly IMapper mapper;
         private readonly IDepartmentService service;
-        public CreateDepartment(IMapper mapper, IDepartmentService service) {
+        public DeleteDepartment(IMapper mapper, IDepartmentService service) { 
             this.mapper = mapper;
-            this.service = service;   
+            this.service = service;
         }
 
-        public async Task<DefaultResponse> Handle(ICreateDepartment request, CancellationToken cancellationToken)
+        public async Task<DefaultResponse> Handle(IDeleteDepartment request, CancellationToken cancellationToken)
         {
-            try
-            {
+            try {
                 // Payload Validator
-                var validator = new CreateDepartmentFilter(service);
+                var validator = new DeleteDepartmentFilter(service);
                 var isValidated = await validator.ValidateAsync(request);
 
                 if (isValidated.Errors.Any())
                 {
                     throw ThrowHttpException.Throw(
                         HttpStatusCode.BadRequest,
-                        "Invalid Data",
-                        "Some required data is missing"
+                        "Bad Request",
+                        ""
                     );
                 }
 
-                var isExist = await service.CheckDepartmentNameIfExist(request.departmentName);
+                var data = await service.CheckIdIfExist(request.Id);
 
-
-                if (!string.IsNullOrEmpty(isExist?.departmentName))
+                if (data == null)
                 {
                     throw ThrowHttpException.Throw(
-                        HttpStatusCode.Conflict,
-                        "Department Already Exist",
-                        "Conflict Detected"
+                        HttpStatusCode.NotFound,
+                        "Data not exist",
+                        ""
                     );
                 }
 
-                var mapped = mapper.Map<CreateDepartmentDto>(request);
-
-                var result = await service.CreateDepartment(mapped);
+                var result = await service.DeleteDepartment(request.Id);
 
                 return result;
             }

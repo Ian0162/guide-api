@@ -14,10 +14,10 @@ namespace GuideAPI.Mapping
             CreateMap<CreateDepartmentDto, Department>().ReverseMap();
             CreateMap<ICreateDepartment, CreateDepartmentDto>().ReverseMap();
             // Update
+            CreateMap<UpdateDepartmentDto, Department>().ReverseMap();
             CreateMap<IUpdateDepartment, UpdateDepartmentDto>().ReverseMap();
 
-
-
+            // Tables
             CreateMap<DepartmentTableDto, DepartmentTableResponse<Department>>().ReverseMap();
         }
     }
