@@ -25,8 +25,8 @@
             }
         }
 
-        public int responseCode { get; private set; } = 200; // Default to 200
-        public string responseMessage { get; private set; } = ""; // Default to empty
+        public int responseCode { get; set; } = 200; // Default to 200
+        public string responseMessage { get; set; } = ""; // Default to empty
 
         public DepartmentTableResponse()
         {

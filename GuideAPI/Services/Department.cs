@@ -47,14 +47,11 @@ namespace GuideAPI.Services
             }
         }
 
-        public async Task<DefaultResponse> CreateDepartment(CreateDepartmentDto request)
+        public async Task CreateDepartment(CreateDepartmentDto request)
         {
             try
             {
-                var result = await repository.CreateDepartment(request);
-                if (result.isErr) throw new InternalServerException("", 500, "Internal Server Error");
-
-                return result;
+                await repository.CreateDepartment(request);
             }
             catch (Exception err)
             {
@@ -70,14 +67,11 @@ namespace GuideAPI.Services
             }
         }
 
-        public async Task<DefaultResponse> UpdateDepartment(Models.Department data, UpdateDepartmentDto request, int Id)
+        public async Task UpdateDepartment(Models.Department data, UpdateDepartmentDto request, int Id)
         {
             try
             {
-                var result = await repository.UpdateDepartment(data, request, Id);
-                if (result.isErr) throw new InternalServerException("", 500, "Internal Server Error");
-
-                return result;
+               await repository.UpdateDepartment(data, request, Id);
             }
             catch (Exception err)
             {
@@ -87,21 +81,15 @@ namespace GuideAPI.Services
                     message = "Internal Server Error",
                     details = err.Message
                 };
-
-                Console.WriteLine(err.Message);
-
 
                 throw new InternalServerException(response.message, response.code, response.details);
             }
         }
-        public async Task<DefaultResponse> DeleteDepartment(int Id)
+        public async Task DeleteDepartment(int Id)
         {
             try
             {
-                var result = await repository.DeleteDepartment(Id);
-                if (result.isErr) throw new InternalServerException("", 500, "Internal Server Error");
-
-                return result;
+                await repository.DeleteDepartment(Id);                
             }
             catch (Exception err)
             {
@@ -111,9 +99,6 @@ namespace GuideAPI.Services
                     message = "Internal Server Error",
                     details = err.Message
                 };
-
-                Console.WriteLine(err.Message);
-
 
                 throw new InternalServerException(response.message, response.code, response.details);
             }

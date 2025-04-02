@@ -2,6 +2,7 @@
 using GuideAPI.Dto;
 using GuideAPI.Models;
 using GuideAPI.Repositories.Interface;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -21,6 +22,8 @@ namespace GuideAPI.Repositories
         public async Task<DepartmentTableResponse<Models.Department>> GetAllDepartmentPagination(DepartmentTableDto pagination)
         {
             IQueryable<Models.Department> List = context.departments.Where(col => col.DeletedAt == null);
+
+            var totalRecords = await context.departments.CountAsync();
 
             var skip = (pagination.page - 1) * pagination.rowsPerPage;
 
@@ -47,6 +50,7 @@ namespace GuideAPI.Repositories
                 .Skip(skip)
                 .Take(pagination.rowsPerPage)
                 .OrderByDescending(ob => ob.CreatedAt)
+                .AsNoTracking()
             .ToListAsync();
 
             var start = result.Count == 0 ? 0 : (pagination.page - 1) * pagination.rowsPerPage + 1;
@@ -55,7 +59,7 @@ namespace GuideAPI.Repositories
             var response = new DepartmentTableResponse<Models.Department>
             {
                 data = result,
-                total = result.Count,
+                total = totalRecords,
                 page = pagination.page,
                 start = start,
                 end = end,
@@ -66,7 +70,7 @@ namespace GuideAPI.Repositories
             return response;
         }
 
-        public async Task<DefaultResponse> CreateDepartment(CreateDepartmentDto request)
+        public async Task CreateDepartment(CreateDepartmentDto request)
         {
             var department = new Department
             {
@@ -76,22 +80,10 @@ namespace GuideAPI.Repositories
             };
 
             await context.departments.AddAsync(department);
-            var result = await context.SaveChangesAsync();
-
-            if(result > 0)
-            {
-                 // Throw Err
-            }
-
-            var response = new DefaultResponse
-            {
-                Id = department.Id,
-            };
-            return response;
-
+            await context.SaveChangesAsync();
         }
 
-        public async Task<DefaultResponse> UpdateDepartment(Models.Department data, UpdateDepartmentDto request, int Id)
+        public async Task UpdateDepartment(Models.Department data, UpdateDepartmentDto request, int Id)
         {
             foreach (PropertyInfo property in request.GetType().GetProperties())
             {
@@ -109,21 +101,10 @@ namespace GuideAPI.Repositories
                 }
             }
 
-            var result = await context.SaveChangesAsync();
-
-            if (result > 0)
-            {
-                // Throw Err
-            }
-
-            var response = new DefaultResponse
-            {
-                Id = Id,
-            };
-            return response;
+            await context.SaveChangesAsync();
         }
 
-        public async Task<DefaultResponse> DeleteDepartment(int Id)
+        public async Task DeleteDepartment(int Id)
         {
             var data = await context.departments.FindAsync(Id);
 
@@ -133,12 +114,6 @@ namespace GuideAPI.Repositories
                 context.departments.Entry(data).State = EntityState.Modified;
                 await context.SaveChangesAsync();
             }
-
-            var response = new DefaultResponse
-            {
-                Id = Id,
-            };
-            return response;
         }
 
         //public async Task RestoreAsync(int id)

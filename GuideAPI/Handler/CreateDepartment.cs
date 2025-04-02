@@ -6,6 +6,8 @@ using GuideAPI.Filters;
 using GuideAPI.Filters.Validators;
 using GuideAPI.Services.Interface;
 using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Web.Http;
 
@@ -27,33 +29,18 @@ namespace GuideAPI.Handler
                 // Payload Validator
                 var validator = new CreateDepartmentFilter(service);
                 var isValidated = await validator.ValidateAsync(request);
-
                 if (isValidated.Errors.Any())
                 {
-                    throw ThrowHttpException.Throw(
-                        HttpStatusCode.BadRequest,
-                        "Invalid Data",
-                        "Some required data is missing"
-                    );
+                    return ThrowHttp.Response(true, 400, "Invalid Request");
                 }
-
                 var isExist = await service.CheckDepartmentNameIfExist(request.departmentName);
-
-
                 if (!string.IsNullOrEmpty(isExist?.departmentName))
                 {
-                    throw ThrowHttpException.Throw(
-                        HttpStatusCode.Conflict,
-                        "Department Already Exist",
-                        "Conflict Detected"
-                    );
+                    return ThrowHttp.Response(true, 409, "Department Already Exist, Conflict Detected");
                 }
-
                 var mapped = mapper.Map<CreateDepartmentDto>(request);
-
-                var result = await service.CreateDepartment(mapped);
-
-                return result;
+                await service.CreateDepartment(mapped);
+                return ThrowHttp.Response(false, 201, "Created Successfully");
             }
             catch (Exception err)
             {
@@ -63,8 +50,6 @@ namespace GuideAPI.Handler
                     message = "Internal Server Error",
                     details = err.Message
                 };
-
-
                 throw new InternalServerException(response.message, response.code, response.details);
 
             }

@@ -29,11 +29,7 @@ namespace GuideAPI.Handler
 
                 if (isValidated.Errors.Any())
                 {
-                    throw ThrowHttpException.Throw(
-                         HttpStatusCode.BadRequest,
-                         "Invalid Data",
-                         "Some required data is missing"
-                    );
+                    return ThrowHttp.PageResponse(true, 400, "Bad Request");
                 }
 
                 var mapped = mapper.Map<DepartmentTableDto>(request);

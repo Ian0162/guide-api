@@ -1,4 +1,5 @@
-﻿using GuideAPI.Dto;
+﻿using Azure;
+using GuideAPI.Dto;
 using GuideAPI.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -34,6 +35,11 @@ namespace GuideAPI.Controllers
         {
             var result = await mediator.Send(new ICreateDepartment(request));
 
+            if (result.isErr)
+            {
+                return StatusCode(result.responseCode, result);
+            }
+
             return Ok(result);
         }
 
@@ -45,6 +51,11 @@ namespace GuideAPI.Controllers
         {
             var result = await mediator.Send(new IUpdateDepartment(request, Id));
 
+            if (result.isErr)
+            {
+                return StatusCode(result.responseCode, result);
+            }
+
             return Ok(result);
         }
 
@@ -54,7 +65,13 @@ namespace GuideAPI.Controllers
         [ProducesDefaultResponseType]
         public async Task<ActionResult> DeleteDepartment(int Id)
         {
-            await mediator.Send(new IDeleteDepartment(Id));
+            var result = await mediator.Send(new IDeleteDepartment(Id));
+
+            if (result.isErr)
+            {
+                return StatusCode(result.responseCode, result);
+            }
+
             return NoContent();
         }
     }

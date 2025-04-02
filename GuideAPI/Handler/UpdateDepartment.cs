@@ -26,52 +26,26 @@ namespace GuideAPI.Handler
                 // Payload Validator
                 var validator = new UpdateDepartmentFilter(service);
                 var isValidated = await validator.ValidateAsync(request);
-
                 if (isValidated.Errors.Any())
                 {
-                    throw ThrowHttpException.Throw(
-                         HttpStatusCode.BadRequest,
-                         "Invalid Data",
-                         "Some required data is missing"
-                    );
+                    return ThrowHttp.Response(true, 400, "Invalid Request");
                 }
-
-                
                 if (!string.IsNullOrEmpty(request.departmentName))
                 {
                     var isExist = await service.CheckDepartmentNameIfExist(request.departmentName);
-
-
                     if (!string.IsNullOrEmpty(isExist?.departmentName))
                     {
-                        throw ThrowHttpException.Throw(
-                             HttpStatusCode.Conflict,
-                             "Department Already Exist",
-                             ""
-                        );
+                        return ThrowHttp.Response(true, 409, "Department Already Exist, Conflict Detected");
                     }
                 }
                 var data = await service.CheckIdIfExist(request.Id);
-
                 if (data == null)
                 {
-                    throw ThrowHttpException.Throw(
-                        HttpStatusCode.NotFound,
-                        "Data not exist",
-                        ""
-                    );
+                    return ThrowHttp.Response(true, 404, "Department Not Found");
                 }
-
-
                 var mapped = mapper.Map<UpdateDepartmentDto>(request);
-
-                var result = await service.UpdateDepartment(data, mapped, request.Id);
-
-                return result;
-            }
-            catch (HttpResponseException)
-            {
-                throw;
+                await service.UpdateDepartment(data, mapped, request.Id);
+                return ThrowHttp.Response(false, 200, "Updated Successfully");
             }
             catch (Exception err)
             {
@@ -81,13 +55,7 @@ namespace GuideAPI.Handler
                     message = "Internal Server Error",
                     details = err.Message
                 };
-
-                throw ThrowHttpException.Throw(
-                    HttpStatusCode.InternalServerError,
-                    response.message,
-                    response.details
-                );
-
+                throw new InternalServerException(response.message, response.code, response.details);
             }
         }
     }

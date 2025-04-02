@@ -11,13 +11,13 @@
             set
             {
                 _isErr = value;
-                responseCode = value ? 500 : 200;
-                responseMessage = value ? "An error occurred" : "";
+                responseCode = responseCode;
+                responseMessage = responseCode == 500 ? "An error occurred" : responseMessage;
             }
         }
 
-        public int responseCode { get; private set; } = 200; // Default to 200
-        public string responseMessage { get; private set; } = ""; // Default to empty
+        public int responseCode { get; set; } = 200; // Default to 200
+        public string responseMessage { get; set; } = ""; // Default to empty
 
         public DefaultResponse()
         {

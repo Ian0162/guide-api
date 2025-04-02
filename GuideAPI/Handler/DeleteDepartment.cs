@@ -24,30 +24,18 @@ namespace GuideAPI.Handler
                 // Payload Validator
                 var validator = new DeleteDepartmentFilter(service);
                 var isValidated = await validator.ValidateAsync(request);
-
                 if (isValidated.Errors.Any())
                 {
-                    throw ThrowHttpException.Throw(
-                        HttpStatusCode.BadRequest,
-                        "Bad Request",
-                        ""
-                    );
+                    return ThrowHttp.Response(true, 400, "Invalid Request");
                 }
-
                 var data = await service.CheckIdIfExist(request.Id);
 
                 if (data == null)
                 {
-                    throw ThrowHttpException.Throw(
-                        HttpStatusCode.NotFound,
-                        "Data not exist",
-                        ""
-                    );
+                    return ThrowHttp.Response(true, 404, "Department Not Found");
                 }
-
-                var result = await service.DeleteDepartment(request.Id);
-
-                return result;
+                await service.DeleteDepartment(request.Id);
+                return ThrowHttp.Response(false, 200, "Removed Successfully");
             }
             catch (Exception err)
             {
@@ -57,10 +45,7 @@ namespace GuideAPI.Handler
                     message = "Internal Server Error",
                     details = err.Message
                 };
-
-
                 throw new InternalServerException(response.message, response.code, response.details);
-
             }
         }
     }
