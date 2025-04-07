@@ -1,0 +1,16 @@
+﻿using GuideAPI.Dto;
+using MediatR;
+
+namespace GuideAPI.Filters
+{
+    public class IRegister : IRequest<AuthResponseDto>
+    {
+        public string Email { get; set; }
+        public string Password { get; set; }
+        public IRegister(AuthRequestDto request)
+        {
+            this.Email = request.Email;
+            this.Password = request.Password;
+        }
+    }
+}

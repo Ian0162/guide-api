@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using GuideAPI.Data.Config;
 using GuideAPI.Dto;
 using GuideAPI.Filters;
 using GuideAPI.Models;
@@ -16,6 +17,14 @@ namespace GuideAPI.Mapping
             // Update
             CreateMap<UpdateDepartmentDto, Department>().ReverseMap();
             CreateMap<IUpdateDepartment, UpdateDepartmentDto>().ReverseMap();
+
+            // User
+            CreateMap<IAuthenticate, AuthResponseDto>().ReverseMap();
+            CreateMap<IAuthenticate, AuthRequestDto>().ReverseMap();
+            CreateMap<IRegister, AuthResponseDto>().ReverseMap();
+            CreateMap<IRegister, AuthRequestDto>().ReverseMap();
+            CreateMap<AuthRequestDto, ApplicationUser>().ReverseMap();
+
 
             // Tables
             CreateMap<DepartmentTableDto, DepartmentTableResponse<Department>>().ReverseMap();

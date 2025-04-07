@@ -1,6 +1,6 @@
 ﻿namespace GuideAPI.Exceptions
 {
-    public class InternalServerException : Exception
+    public class InternalServerException : ApplicationException
     {
         public int code { get; set; }
         public string message { get; set; }

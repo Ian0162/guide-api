@@ -21,42 +21,30 @@ namespace GuideAPI.Handler
 
         public async Task<DefaultResponse> Handle(IUpdateDepartment request , CancellationToken cancellationToken)
         {
-            try
+            
+            var validator = new UpdateDepartmentFilter(service);
+            var isValidated = await validator.ValidateAsync(request);
+            if (isValidated.Errors.Any())
             {
-                // Payload Validator
-                var validator = new UpdateDepartmentFilter(service);
-                var isValidated = await validator.ValidateAsync(request);
-                if (isValidated.Errors.Any())
-                {
-                    return ThrowHttp.Response(true, 400, "Invalid Request");
-                }
-                if (!string.IsNullOrEmpty(request.departmentName))
-                {
-                    var isExist = await service.CheckDepartmentNameIfExist(request.departmentName);
-                    if (!string.IsNullOrEmpty(isExist?.departmentName))
-                    {
-                        return ThrowHttp.Response(true, 409, "Department Already Exist, Conflict Detected");
-                    }
-                }
-                var data = await service.CheckIdIfExist(request.Id);
-                if (data == null)
-                {
-                    return ThrowHttp.Response(true, 404, "Department Not Found");
-                }
-                var mapped = mapper.Map<UpdateDepartmentDto>(request);
-                await service.UpdateDepartment(data, mapped, request.Id);
-                return ThrowHttp.Response(false, 200, "Updated Successfully");
+                throw new BadRequestException("Invalid Request");
             }
-            catch (Exception err)
+            if (!string.IsNullOrEmpty(request.departmentName))
             {
-                var response = new
+                var isExist = await service.CheckDepartmentNameIfExist(request.departmentName);
+                if (!string.IsNullOrEmpty(isExist?.departmentName))
                 {
-                    code = 500,
-                    message = "Internal Server Error",
-                    details = err.Message
-                };
-                throw new InternalServerException(response.message, response.code, response.details);
+                    throw new ConflictException(nameof(Handle), isExist.departmentName);
+                }
             }
+            var data = await service.CheckIdIfExist(request.Id);
+            if (data == null)
+            {
+                throw new NotFoundException(nameof(Handle), request.Id);
+            }
+            var mapped = mapper.Map<UpdateDepartmentDto>(request);
+            await service.UpdateDepartment(data, mapped, request.Id);
+            return new DefaultResponse { };
+           
         }
     }
 }

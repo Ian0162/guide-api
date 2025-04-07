@@ -21,35 +21,19 @@ namespace GuideAPI.Handler
 
         public async Task<DepartmentTableResponse<Department>> Handle(IDepartmentPagination request, CancellationToken cancellationToken) 
         {
-            try
+            var validator = new DepartmentPaginationFilter(service);
+            var isValidated = await validator.ValidateAsync(request);
+
+            if (isValidated.Errors.Any())
             {
-                // Payload Validator
-                var validator = new DepartmentPaginationFilter(service);
-                var isValidated = await validator.ValidateAsync(request);
-
-                if (isValidated.Errors.Any())
-                {
-                    return ThrowHttp.PageResponse(true, 400, "Bad Request");
-                }
-
-                var mapped = mapper.Map<DepartmentTableDto>(request);
-
-                var result = await service.GetAllDepartmentPagination(mapped);
-
-                return result;
-
+                throw new BadRequestException("Invalid Request");
             }
-            catch (Exception err)
-            {
-                var response = new
-                {
-                    code = 500,
-                    message = "Internal Server Error",
-                    details = err.Message
-                };
-                throw new InternalServerException(response.message, response.code, response.details);
 
-            }
+            var mapped = mapper.Map<DepartmentTableDto>(request);
+
+            var result = await service.GetAllDepartmentPagination(mapped);
+
+            return result;
         }
     }
 }

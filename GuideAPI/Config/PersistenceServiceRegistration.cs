@@ -1,4 +1,5 @@
-﻿using GuideAPI.Repositories.Interface;
+﻿using GuideAPI.Repositories;
+using GuideAPI.Repositories.Interface;
 using GuideAPI.Services;
 using GuideAPI.Services.Interface;
 
@@ -10,9 +11,13 @@ namespace GuideAPI.Config
         {
 
             services.AddScoped(typeof(IDepartment<>), typeof(Repositories.Department<>));
+            services.AddScoped<IAuthentication,Authentication>();
             services.AddScoped<IDepartmentService, Department>();
+            services.AddScoped<IAuthService, AuthService>();
+
 
             return services;
         }
     }
 }
+    

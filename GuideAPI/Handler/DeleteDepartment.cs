@@ -20,33 +20,21 @@ namespace GuideAPI.Handler
 
         public async Task<DefaultResponse> Handle(IDeleteDepartment request, CancellationToken cancellationToken)
         {
-            try {
-                // Payload Validator
-                var validator = new DeleteDepartmentFilter(service);
-                var isValidated = await validator.ValidateAsync(request);
-                if (isValidated.Errors.Any())
-                {
-                    return ThrowHttp.Response(true, 400, "Invalid Request");
-                }
-                var data = await service.CheckIdIfExist(request.Id);
-
-                if (data == null)
-                {
-                    return ThrowHttp.Response(true, 404, "Department Not Found");
-                }
-                await service.DeleteDepartment(request.Id);
-                return ThrowHttp.Response(false, 200, "Removed Successfully");
-            }
-            catch (Exception err)
+            // Payload Validator
+            var validator = new DeleteDepartmentFilter(service);
+            var isValidated = await validator.ValidateAsync(request);
+            if (isValidated.Errors.Any())
             {
-                var response = new
-                {
-                    code = 500,
-                    message = "Internal Server Error",
-                    details = err.Message
-                };
-                throw new InternalServerException(response.message, response.code, response.details);
+                throw new BadRequestException("Invalid Request");
             }
+            var data = await service.CheckIdIfExist(request.Id);
+
+            if (data == null)
+            {
+                throw new NotFoundException(nameof(Handle), request.Id);
+            }
+            await service.DeleteDepartment(request.Id);
+            return new DefaultResponse { };
         }
     }
 }

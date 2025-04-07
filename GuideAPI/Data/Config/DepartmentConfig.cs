@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GuideAPI.Data.Config
 {
-    public class Department : IEntityTypeConfiguration<Models.Department>
+    public class DepartmentConfig : IEntityTypeConfiguration<Models.Department>
     {
         public void Configure(EntityTypeBuilder<Models.Department> builder)
         {

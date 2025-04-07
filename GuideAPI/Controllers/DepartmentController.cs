@@ -34,12 +34,6 @@ namespace GuideAPI.Controllers
         public async Task<ActionResult<CreateDepartmentDto>> CreateDepartment(CreateDepartmentDto request)
         {
             var result = await mediator.Send(new ICreateDepartment(request));
-
-            if (result.isErr)
-            {
-                return StatusCode(result.responseCode, result);
-            }
-
             return Ok(result);
         }
 
